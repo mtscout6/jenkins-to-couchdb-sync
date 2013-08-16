@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>Sabatoast.Puller</id>
+    <version>0.0.0</version>
+    <authors>Matthew L. Smith</authors>
+    <owners>Matthew L. Smith</owners>
+    <licenseUrl></licenseUrl>
+    <projectUrl></projectUrl>
+    <iconUrl></iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Pulls jenkins api for sabatoast</description>
+    <tags></tags>
+    <dependencies>
+      <dependency id="FubuCore" version="1.0.0.225" />
+    </dependencies>
+  </metadata>
+  <files>
+  </files>
+</package>
