@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace sabatoast_puller
 {
@@ -10,6 +6,26 @@ namespace sabatoast_puller
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("Starting Sabatoast Puller");
+
+            var puller = new Puller();
+            puller.Start();
+
+            do
+            {
+                Console.WriteLine("Sabatoast Puller started type 'q' to quit");
+
+                var key = Console.ReadKey(true);
+
+                if ("q".Equals(key.KeyChar.ToString(), StringComparison.InvariantCultureIgnoreCase))
+                {
+                    break;
+                }
+            } while (true);
+
+            Console.WriteLine("Stopping Sabatoast Puller");
+
+            puller.Stop();
         }
     }
 }

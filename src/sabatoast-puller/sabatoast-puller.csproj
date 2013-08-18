@@ -33,6 +33,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Common.Logging">
+      <HintPath>..\packages\Common.Logging\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="FubuCore">
+      <HintPath>..\packages\FubuCore\lib\FubuCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Quartz">
+      <HintPath>..\packages\Quartz\lib\net40\Quartz.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp\lib\net4\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="StructureMap">
+      <HintPath>..\packages\structuremap\lib\net40\StructureMap.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -45,10 +60,29 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Jenkins\DTO\Root.cs" />
+    <Compile Include="Jenkins\JenkinsSettings.cs" />
+    <Compile Include="Jenkins\IJenkinsRestClient.cs" />
+    <Compile Include="Quartz\StructureMapSchedulerJobFactory.cs" />
+    <Compile Include="Quartz\Triggers\IHourlyTrigger.cs" />
+    <Compile Include="Registries\SabatoastRegistry.cs" />
+    <Compile Include="RestClientWrapper.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="Puller.cs" />
+    <Compile Include="BasicEncodedAuthenticator.cs" />
+    <Compile Include="Quartz\Jobs\Root.cs" />
+    <Compile Include="Registries\JenkinsRegistry.cs" />
+    <Compile Include="Registries\QuartzRegistry.cs" />
+    <Compile Include="Sabatoast\ISabatoastRestClient.cs" />
+    <Compile Include="Sabatoast\SabatoastSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ripple.dependencies.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
