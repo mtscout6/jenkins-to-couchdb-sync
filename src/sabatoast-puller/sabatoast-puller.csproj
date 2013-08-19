@@ -60,6 +60,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Jenkins\DTO\Job.cs" />
     <Compile Include="Jenkins\DTO\Root.cs" />
     <Compile Include="Jenkins\JenkinsSettings.cs" />
     <Compile Include="Jenkins\IJenkinsRestClient.cs" />
@@ -73,7 +74,10 @@
     <Compile Include="Quartz\Jobs\Root.cs" />
     <Compile Include="Registries\JenkinsRegistry.cs" />
     <Compile Include="Registries\QuartzRegistry.cs" />
+    <Compile Include="Sabatoast\IJobsCache.cs" />
     <Compile Include="Sabatoast\ISabatoastRestClient.cs" />
+    <Compile Include="Sabatoast\Job.cs" />
+    <Compile Include="Sabatoast\JobsCache.cs" />
     <Compile Include="Sabatoast\SabatoastSettings.cs" />
   </ItemGroup>
   <ItemGroup>

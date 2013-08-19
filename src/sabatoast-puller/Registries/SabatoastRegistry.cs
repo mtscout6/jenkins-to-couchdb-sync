@@ -8,6 +8,8 @@ namespace sabatoast_puller.Registries
         public SabatoastRegistry()
         {
             For<ISabatoastRestClient>().Singleton().Use<SabatoastRestClient>();
+
+            For<IJobsCache>().Singleton().Use<JobsCache>();
         }
     }
 }
