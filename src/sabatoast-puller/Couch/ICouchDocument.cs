@@ -10,7 +10,7 @@ namespace sabatoast_puller.Couch
         T _data { get; set; }
     }
 
-    public abstract class CouchDocument<T> : ICouchDocument<T>
+    public class CouchDocument<T> : ICouchDocument<T>
     {
         public virtual string _id { get; set; }
         public string _rev { get; set; }
@@ -25,5 +25,20 @@ namespace sabatoast_puller.Couch
         }
 
         public T _data { get; set; }
+    }
+
+    public static class CouchDocumentExtensions
+    {
+        public static ICouchDocument<T> ToCouchDoc<T>(this T obj)
+        {
+            var doc = new CouchDocument<T>
+                {
+                    _data = obj
+                };
+
+            // TODO: Figure out id gen
+
+            return doc;
+        }
     }
 }
