@@ -6,9 +6,10 @@ namespace sabatoast_puller
     {
         static void Main(string[] args)
         {
+            var puller = new Puller();
+
             Console.WriteLine("Starting Sabatoast Puller");
 
-            var puller = new Puller();
             puller.Start();
 
             do
@@ -26,6 +27,8 @@ namespace sabatoast_puller
             Console.WriteLine("Stopping Sabatoast Puller");
 
             puller.Stop();
+
+            Console.WriteLine("Stopped Sabatoast Puller");
         }
     }
 }

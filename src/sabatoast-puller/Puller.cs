@@ -1,6 +1,4 @@
 ﻿using Quartz;
-using Quartz.Impl;
-using Quartz.Impl.Triggers;
 using StructureMap;
 using sabatoast_puller.Quartz.Jobs;
 using sabatoast_puller.Quartz.Triggers;
@@ -16,9 +14,9 @@ namespace sabatoast_puller
         {
             _container = new Container(x =>
                 {
+                    x.AddRegistry<LoggingRegistry>();
                     x.AddRegistry<QuartzRegistry>();
                     x.AddRegistry<JenkinsRegistry>();
-                    x.AddRegistry<SabatoastRegistry>();
                 });
         }
 
@@ -32,7 +30,7 @@ namespace sabatoast_puller
 
         public void Stop()
         {
-            _container.GetInstance<IScheduler>().Shutdown();
+            _container.GetInstance<IScheduler>().Shutdown(true);
         }
     }
 }

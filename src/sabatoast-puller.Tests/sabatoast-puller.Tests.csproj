@@ -4,17 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9341D5A8-1CD6-435A-8509-AD9AF31F65CA}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{96642783-0C05-4495-A927-87FF4603F14E}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>sabatoast_puller</RootNamespace>
-    <AssemblyName>sabatoast-puller</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <RootNamespace>sabatoast_puller.Tests</RootNamespace>
+    <AssemblyName>sabatoast-puller.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -38,6 +35,9 @@
     </Reference>
     <Reference Include="FubuCore">
       <HintPath>..\packages\FubuCore\lib\FubuCore.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Quartz">
       <HintPath>..\packages\Quartz\lib\net40\Quartz.dll</HintPath>
@@ -57,39 +57,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\CommonAssemblyInfo.cs">
-      <Link>CommonAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="Couch\CouchClient.cs" />
-    <Compile Include="Couch\CouchRegistry.cs" />
-    <Compile Include="Couch\CouchRestClient.cs" />
-    <Compile Include="Couch\CouchSettings.cs" />
-    <Compile Include="Couch\ICouchRestClient.cs" />
-    <Compile Include="Jenkins\DTO\Build.cs" />
-    <Compile Include="Jenkins\DTO\Job.cs" />
-    <Compile Include="Jenkins\DTO\Root.cs" />
-    <Compile Include="Jenkins\JenkinsRestClient.cs" />
-    <Compile Include="Jenkins\JenkinsSettings.cs" />
-    <Compile Include="Jenkins\IJenkinsRestClient.cs" />
-    <Compile Include="Quartz\StructureMapSchedulerJobFactory.cs" />
-    <Compile Include="Quartz\Triggers\IHourlyTrigger.cs" />
-    <Compile Include="Registries\LoggingRegistry.cs" />
-    <Compile Include="RestClientWrapper.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Puller.cs" />
-    <Compile Include="BasicEncodedAuthenticator.cs" />
-    <Compile Include="Quartz\Jobs\Root.cs" />
-    <Compile Include="Registries\JenkinsRegistry.cs" />
-    <Compile Include="Registries\QuartzRegistry.cs" />
-    <Compile Include="Couch\ICouchDocument.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="ripple.dependencies.config">
       <SubType>Designer</SubType>
     </None>

@@ -1,4 +1,4 @@
-﻿namespace sabatoast_puller
+﻿namespace sabatoast_puller.Jenkins
 {
     public class JenkinsSettings
     {

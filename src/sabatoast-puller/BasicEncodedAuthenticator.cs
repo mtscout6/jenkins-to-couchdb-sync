@@ -22,7 +22,6 @@ namespace sabatoast_puller
             }
 
             request.AddParameter("Authorization", _auth, ParameterType.HttpHeader);
-
         }
     }
 }

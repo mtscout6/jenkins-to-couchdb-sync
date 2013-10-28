@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Root", "Root", "{B96963C0-8
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sabatoast-puller", "sabatoast-puller\sabatoast-puller.csproj", "{9341D5A8-1CD6-435A-8509-AD9AF31F65CA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sabatoast-puller.Tests", "sabatoast-puller.Tests\sabatoast-puller.Tests.csproj", "{96642783-0C05-4495-A927-87FF4603F14E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{9341D5A8-1CD6-435A-8509-AD9AF31F65CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9341D5A8-1CD6-435A-8509-AD9AF31F65CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9341D5A8-1CD6-435A-8509-AD9AF31F65CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96642783-0C05-4495-A927-87FF4603F14E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96642783-0C05-4495-A927-87FF4603F14E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96642783-0C05-4495-A927-87FF4603F14E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96642783-0C05-4495-A927-87FF4603F14E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
