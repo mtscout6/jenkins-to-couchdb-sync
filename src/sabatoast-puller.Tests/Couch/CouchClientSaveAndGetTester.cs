@@ -35,7 +35,7 @@ namespace sabatoast_puller.Tests.Couch
 
             var requestGet = _client.Get<TestData>(_sourceData._id);
             requestGet.Wait(1000).ShouldBeTrue();
-            _retrievedData = requestGet.Result;
+            _retrievedData = requestGet.Result.Data;
         }
 
         [Test]

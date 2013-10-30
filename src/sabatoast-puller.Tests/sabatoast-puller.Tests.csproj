@@ -60,6 +60,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Couch\CouchClientStaleDocumentFailTester.cs" />
     <Compile Include="Couch\CouchClientUpdateTester.cs" />
     <Compile Include="Couch\CouchClientSaveAndGetTester.cs" />
     <Compile Include="Couch\CouchDbInteractionContext.cs" />

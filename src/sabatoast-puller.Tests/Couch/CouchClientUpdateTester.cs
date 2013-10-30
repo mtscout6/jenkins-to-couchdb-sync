@@ -36,7 +36,7 @@ namespace sabatoast_puller.Tests.Couch
 
             var requestGet = _client.Get<TestData>(_sourceData._id);
             requestGet.Wait(1000).ShouldBeTrue();
-            _retrievedData1 = requestGet.Result;
+            _retrievedData1 = requestGet.Result.Data;
 
             _retrievedData1.StringData = "UpdatedString";
             _retrievedData1.BooleanData = false;
@@ -55,7 +55,7 @@ namespace sabatoast_puller.Tests.Couch
 
             requestGet = _client.Get<TestData>(_sourceData._id);
             requestGet.Wait(1000).ShouldBeTrue();
-            _retrievedData2 = requestGet.Result;
+            _retrievedData2 = requestGet.Result.Data;
         }
 
         [Test]

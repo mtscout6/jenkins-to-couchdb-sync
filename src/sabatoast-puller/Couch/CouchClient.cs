@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Net;
 using System.Threading.Tasks;
 using RestSharp;
 using Quartz.Util;
-using FubuCore;
 using sabatoast_puller.Utils.Json;
 
 namespace sabatoast_puller.Couch
 {
     public interface ICouchClient
     {
-        Task Save<T>(T document) where T : ICouchDocument;
-        Task<T> Get<T>(string id) where T : ICouchDocument;
+        Task<IRestResponse<CouchResponse>> Save<T>(T document) where T : ICouchDocument;
+        Task<IRestResponse<T>> Get<T>(string id) where T : ICouchDocument;
     }
 
     public class CouchClient : ICouchClient
@@ -25,7 +23,7 @@ namespace sabatoast_puller.Couch
             _settings = settings;
         }
 
-        public Task Save<T>(T document) where T : ICouchDocument
+        public Task<IRestResponse<CouchResponse>>  Save<T>(T document) where T : ICouchDocument
         {
             if (document._id.IsNullOrWhiteSpace())
             {
@@ -44,22 +42,17 @@ namespace sabatoast_puller.Couch
                               {
                                   var response = responseTask.Result;
 
-                                  if ((int) response.StatusCode >= 200 && (int) response.StatusCode < 300)
+                                  if (200 <= (int) response.StatusCode && (int) response.StatusCode < 300)
                                   {
                                       document._rev = response.Data.Rev;
-                                      return;
+                                      return response;
                                   }
 
-                                  if (response.ResponseStatus == ResponseStatus.Completed)
-                                  {
-                                      throw new Exception("Failed to save document {0} [Error: {1}, Reason: {2}]".ToFormat(document._id, response.Data.Error, response.Data.Reason));
-                                  }
-
-                                  throw new Exception("Failed to save document {0}".ToFormat(document._id));
+                                  return response;
                               });
         }
 
-        public Task<T> Get<T>(string id) where T : ICouchDocument
+        public Task<IRestResponse<T>> Get<T>(string id) where T : ICouchDocument
         {
             if (id.IsNullOrWhiteSpace())
             {
@@ -69,18 +62,7 @@ namespace sabatoast_puller.Couch
             var request = BuildRequest(id);
             request.Method = Method.GET;
 
-            return _client.ExecuteTaskAsync<T>(request)
-                          .ContinueWith(responseTask =>
-                              {
-                                  var response = responseTask.Result;
-
-                                  if (response.StatusCode == HttpStatusCode.OK)
-                                  {
-                                      return response.Data;
-                                  }
-
-                                  throw new Exception("Failed to get document {0}".ToFormat(id));
-                              });
+            return _client.ExecuteTaskAsync<T>(request);
         }
 
         RestRequest BuildRequest(string id)
