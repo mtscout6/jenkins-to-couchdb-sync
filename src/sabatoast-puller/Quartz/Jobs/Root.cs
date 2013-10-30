@@ -1,18 +1,18 @@
-﻿using System;
+﻿using System.Threading.Tasks;
 using Common.Logging;
 using Quartz;
-using RestSharp;
 using sabatoast_puller.Jenkins;
+using System.Collections.Generic;
 using FubuCore;
 
 namespace sabatoast_puller.Quartz.Jobs
 {
     public class Root : IJob
     {
-        private readonly IJenkinsRestClient _jenkinsClient;
+        private readonly IJenkinsClient _jenkinsClient;
         private readonly ILog _log;
 
-        public Root(IJenkinsRestClient jenkinsClient, ILog log)
+        public Root(IJenkinsClient jenkinsClient, ILog log)
         {
             _jenkinsClient = jenkinsClient;
             _log = log;
@@ -20,23 +20,17 @@ namespace sabatoast_puller.Quartz.Jobs
 
         public void Execute(IJobExecutionContext context)
         {
-            var request = new RestRequest("api/json", Method.GET);
-
-            _jenkinsClient.ExecuteAsync<Jenkins.DTO.Root>(request, response =>
-                {
-                    if (response.ResponseStatus != ResponseStatus.Completed)
-                    {
-                        _log.Error("Failed to retrieve {0}".ToFormat(_jenkinsClient.BuildUri(request).PathAndQuery));
-                        return;
-                    }
-
-                    ProcessRootData(response.Data);
-                });
+            _log.Info("Polling Jenkins job list");
+            _jenkinsClient.Root()
+                          .ContinueWith(t => Process(t.Result), TaskContinuationOptions.OnlyOnRanToCompletion);
         }
 
-        void ProcessRootData(Jenkins.DTO.Root rootData)
+        void Process(Jenkins.Models.Root root)
         {
-
+            root.Jobs.Each(job =>
+                {
+                    _log.Debug("Processing job {0}".ToFormat(job.Name));
+                });
         }
     }
 }

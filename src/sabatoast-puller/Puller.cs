@@ -1,5 +1,6 @@
 ﻿using Quartz;
 using StructureMap;
+using sabatoast_puller.Couch;
 using sabatoast_puller.Quartz.Jobs;
 using sabatoast_puller.Quartz.Triggers;
 using sabatoast_puller.Registries;
@@ -17,6 +18,7 @@ namespace sabatoast_puller
                     x.AddRegistry<LoggingRegistry>();
                     x.AddRegistry<QuartzRegistry>();
                     x.AddRegistry<JenkinsRegistry>();
+                    x.AddRegistry<CouchRegistry>();
                 });
         }
 

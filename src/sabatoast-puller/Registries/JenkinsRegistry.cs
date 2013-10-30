@@ -8,7 +8,8 @@ namespace sabatoast_puller.Registries
     {
         public JenkinsRegistry()
         {
-            For<IJenkinsRestClient>().Singleton().Use<JenkinsRestClient>();
+            For<IJenkinsRestClient>().Use<JenkinsRestClient>();
+            For<IJenkinsClient>().Use<JenkinsClient>();
         }
     }
 }

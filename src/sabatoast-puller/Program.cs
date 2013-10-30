@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Timers;
 
 namespace sabatoast_puller
 {
@@ -12,10 +13,12 @@ namespace sabatoast_puller
 
             puller.Start();
 
+            var trigger = new Timer(10000);
+            trigger.Elapsed += (sender, eventArgs) => Console.WriteLine("Sabatoast Puller started type 'q' to quit");
+            trigger.Start();
+
             do
             {
-                Console.WriteLine("Sabatoast Puller started type 'q' to quit");
-
                 var key = Console.ReadKey(true);
 
                 if ("q".Equals(key.KeyChar.ToString(), StringComparison.InvariantCultureIgnoreCase))
@@ -24,6 +27,7 @@ namespace sabatoast_puller
                 }
             } while (true);
 
+            trigger.Stop();
             Console.WriteLine("Stopping Sabatoast Puller");
 
             puller.Stop();

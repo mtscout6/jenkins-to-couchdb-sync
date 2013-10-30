@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace sabatoast_puller.Jenkins.DTO
+namespace sabatoast_puller.Jenkins.Models
 {
     public class Job
     {
