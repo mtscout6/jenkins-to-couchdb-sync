@@ -1,7 +1,9 @@
-﻿namespace sabatoast_puller.Couch
+﻿using System;
+
+namespace sabatoast_puller.Couch
 {
     public class CouchSettings
     {
-        public string Url { get; set; }
+        public Uri Uri { get; set; }
     }
 }

@@ -2,18 +2,21 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading;
+using System.Threading.Tasks;
 using Common.Logging;
 using RestSharp;
 using FubuCore;
+using RestSharp.Deserializers;
 
 namespace sabatoast_puller
 {
     public abstract class RestClientWrapper : IRestClient
     {
-        private readonly IRestClient _client;
+        private readonly RestClient _client;
         private readonly ILog _log;
 
-        protected RestClientWrapper(IRestClient client, ILog log)
+        protected RestClientWrapper(RestClient client, ILog log)
         {
             _client = client;
             _log = log;
@@ -130,6 +133,78 @@ namespace sabatoast_puller
             return _client.ExecuteAsPost<T>(request, httpMethod);
         }
 
+        public Task<IRestResponse<T>> ExecuteTaskAsync<T>(IRestRequest request, CancellationToken token)
+        {
+            _log.Debug("Executing async task request: {0} [{1}]".ToFormat(request.Resource, request.Method));
+            return _client.ExecuteTaskAsync<T>(request, token);
+        }
+
+        public Task<IRestResponse<T>> ExecuteTaskAsync<T>(IRestRequest request)
+        {
+            _log.Debug("Executing async task request: {0} [{1}]".ToFormat(request.Resource, request.Method));
+            return _client.ExecuteTaskAsync<T>(request);
+        }
+
+        public Task<IRestResponse<T>> ExecuteGetTaskAsync<T>(IRestRequest request)
+        {
+            _log.Debug("Executing async task get request: {0} [{1}]".ToFormat(request.Resource, request.Method));
+            return _client.ExecuteGetTaskAsync<T>(request);
+        }
+
+        public Task<IRestResponse<T>> ExecuteGetTaskAsync<T>(IRestRequest request, CancellationToken token)
+        {
+            _log.Debug("Executing async task get request: {0} [{1}]".ToFormat(request.Resource, request.Method));
+            return _client.ExecuteGetTaskAsync<T>(request, token);
+        }
+
+        public Task<IRestResponse<T>> ExecutePostTaskAsync<T>(IRestRequest request)
+        {
+            _log.Debug("Executing async task post request: {0} [{1}]".ToFormat(request.Resource, request.Method));
+            return _client.ExecutePostTaskAsync<T>(request);
+        }
+
+        public Task<IRestResponse<T>> ExecutePostTaskAsync<T>(IRestRequest request, CancellationToken token)
+        {
+            _log.Debug("Executing async task post request: {0} [{1}]".ToFormat(request.Resource, request.Method));
+            return _client.ExecutePostTaskAsync<T>(request, token);
+        }
+
+        public Task<IRestResponse> ExecuteTaskAsync(IRestRequest request, CancellationToken token)
+        {
+            _log.Debug("Executing async task request: {0} [{1}]".ToFormat(request.Resource, request.Method));
+            return _client.ExecuteTaskAsync(request, token);
+        }
+
+        public Task<IRestResponse> ExecuteTaskAsync(IRestRequest request)
+        {
+            _log.Debug("Executing async task request: {0} [{1}]".ToFormat(request.Resource, request.Method));
+            return _client.ExecuteTaskAsync(request);
+        }
+
+        public Task<IRestResponse> ExecuteGetTaskAsync(IRestRequest request)
+        {
+            _log.Debug("Executing async task get request: {0} [{1}]".ToFormat(request.Resource, request.Method));
+            return _client.ExecuteGetTaskAsync(request);
+        }
+
+        public Task<IRestResponse> ExecuteGetTaskAsync(IRestRequest request, CancellationToken token)
+        {
+            _log.Debug("Executing async task get request: {0} [{1}]".ToFormat(request.Resource, request.Method));
+            return _client.ExecuteGetTaskAsync(request, token);
+        }
+
+        public Task<IRestResponse> ExecutePostTaskAsync(IRestRequest request)
+        {
+            _log.Debug("Executing async task post request: {0} [{1}]".ToFormat(request.Resource, request.Method));
+            return _client.ExecutePostTaskAsync(request);
+        }
+
+        public Task<IRestResponse> ExecutePostTaskAsync(IRestRequest request, CancellationToken token)
+        {
+            _log.Debug("Executing async task post request: {0} [{1}]".ToFormat(request.Resource, request.Method));
+            return _client.ExecutePostTaskAsync(request, token);
+        }
+
         public CookieContainer CookieContainer
         {
             get { return _client.CookieContainer; }
@@ -181,6 +256,11 @@ namespace sabatoast_puller
         {
             get { return _client.Proxy; }
             set { _client.Proxy = value; }
+        }
+
+        public void AddHandler(string contentType, IDeserializer deserializer)
+        {
+            _client.AddHandler(contentType, deserializer);
         }
     }
 }
