@@ -15,7 +15,8 @@ namespace sabatoast_puller.Quartz
 
         public IJob NewJob(TriggerFiredBundle bundle, IScheduler scheduler)
         {
-            return (IJob) _container.GetInstance(bundle.JobDetail.JobType);
+            var nestedContainer = _container.GetNestedContainer();
+            return (IJob) nestedContainer.GetInstance(bundle.JobDetail.JobType);
         }
 
         /// <summary>
