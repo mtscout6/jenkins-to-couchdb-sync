@@ -4,6 +4,7 @@ using Quartz.Simpl;
 using Quartz.Spi;
 using StructureMap.Configuration.DSL;
 using sabatoast_puller.Quartz;
+using sabatoast_puller.Quartz.Schedulers;
 using sabatoast_puller.Quartz.Triggers;
 
 namespace sabatoast_puller.Registries
@@ -34,7 +35,11 @@ namespace sabatoast_puller.Registries
                     return scheduler;
                 });
 
-            For<IHourlyTrigger>().Use(new HourlyTrigger());
+            For<IRootJobScheduler>().Use<RootJobScheduler>();
+            For<IJenkinsJobScheduler>().Use<JenkinsJobScheduler>();
+
+            For<IHourlyTrigger>().AlwaysUnique().Use(ctx => new HourlyTrigger());
+            For<IHalfMinuteTriggerBuilder>().Use<HalfMinuteTriggerBuilder>();
         }
     }
 }

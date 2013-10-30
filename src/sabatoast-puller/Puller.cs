@@ -1,8 +1,7 @@
 ﻿using Quartz;
 using StructureMap;
 using sabatoast_puller.Couch;
-using sabatoast_puller.Quartz.Jobs;
-using sabatoast_puller.Quartz.Triggers;
+using sabatoast_puller.Quartz.Schedulers;
 using sabatoast_puller.Registries;
 
 namespace sabatoast_puller
@@ -27,7 +26,7 @@ namespace sabatoast_puller
             var scheduler = _container.GetInstance<IScheduler>();
             scheduler.Start();
 
-            scheduler.ScheduleHourlyAndTrigger<Root>(_container);
+            _container.GetInstance<IRootJobScheduler>().Schedule();
         }
 
         public void Stop()

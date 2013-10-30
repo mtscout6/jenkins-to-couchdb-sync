@@ -79,7 +79,17 @@
     <Compile Include="Jenkins\JenkinsRestClient.cs" />
     <Compile Include="Jenkins\JenkinsSettings.cs" />
     <Compile Include="Jenkins\IJenkinsRestClient.cs" />
+    <Compile Include="Quartz\Jobs\JenkinsJob.cs" />
+    <Compile Include="Quartz\Schedulers\IJenkinsJobScheduler.cs" />
+    <Compile Include="Quartz\Schedulers\IRootJobScheduler.cs" />
+    <Compile Include="Quartz\Schedulers\JenkinsJobScheduler.cs" />
+    <Compile Include="Quartz\Schedulers\RootJobScheduler.cs" />
     <Compile Include="Quartz\StructureMapSchedulerJobFactory.cs" />
+    <Compile Include="Quartz\Triggers\HalfMinuteTrigger.cs" />
+    <Compile Include="Quartz\Triggers\HalfMinuteTriggerBuilder.cs" />
+    <Compile Include="Quartz\Triggers\HourlyTrigger.cs" />
+    <Compile Include="Quartz\Triggers\IHalfMinuteTrigger.cs" />
+    <Compile Include="Quartz\Triggers\IHalfMinuteTriggerBuilder.cs" />
     <Compile Include="Quartz\Triggers\IHourlyTrigger.cs" />
     <Compile Include="Registries\LoggingRegistry.cs" />
     <Compile Include="RestClientWrapper.cs" />

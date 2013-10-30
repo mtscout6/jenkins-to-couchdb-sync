@@ -4,6 +4,7 @@ using Quartz;
 using sabatoast_puller.Jenkins;
 using System.Collections.Generic;
 using FubuCore;
+using sabatoast_puller.Quartz.Schedulers;
 
 namespace sabatoast_puller.Quartz.Jobs
 {
@@ -11,11 +12,13 @@ namespace sabatoast_puller.Quartz.Jobs
     {
         private readonly IJenkinsClient _jenkinsClient;
         private readonly ILog _log;
+        private readonly IJenkinsJobScheduler _jobScheduler;
 
-        public Root(IJenkinsClient jenkinsClient, ILog log)
+        public Root(IJenkinsClient jenkinsClient, ILog log, IJenkinsJobScheduler jobScheduler)
         {
             _jenkinsClient = jenkinsClient;
             _log = log;
+            _jobScheduler = jobScheduler;
         }
 
         public void Execute(IJobExecutionContext context)
@@ -29,7 +32,8 @@ namespace sabatoast_puller.Quartz.Jobs
         {
             root.Jobs.Each(job =>
                 {
-                    _log.Debug("Processing job {0}".ToFormat(job.Name));
+                    _log.Debug("Scheduling job {0}".ToFormat(job.Name));
+                    _jobScheduler.Schedule(job.Name, job.Url);
                 });
         }
     }
