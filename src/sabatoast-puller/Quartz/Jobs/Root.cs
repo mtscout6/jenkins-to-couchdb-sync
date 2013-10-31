@@ -45,17 +45,11 @@ namespace sabatoast_puller.Quartz.Jobs
                         return;
                     }
 
-                    _log.Debug("Scheduling job {0}".ToFormat(job.Name));
+                    _log.Info("Scheduling job {0}".ToFormat(job.Name));
                     _jobScheduler.Schedule(Scheduler, job.Name, job.Url);
                 });
 
-            foreach (var removedJob in existingJobDetails)
-            {
-                Scheduler.GetTriggerKeys(GroupMatcher<TriggerKey>.GroupEquals(_jobScheduler.TriggerGroup(removedJob.Name)))
-                    .Each(trigger => Scheduler.UnscheduleJob(trigger));
-
-                Scheduler.DeleteJob(removedJob);
-            }
+            existingJobDetails.Each(job => _jobScheduler.Remove(Scheduler, job.Name));
         }
 
     }

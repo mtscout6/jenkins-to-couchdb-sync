@@ -67,6 +67,7 @@
     </Compile>
     <Compile Include="Couch\CouchClient.cs" />
     <Compile Include="Quartz\Jobs\IJobWithScheduler.cs" />
+    <Compile Include="Quartz\Schedulers\IBuildScheduler.cs" />
     <Compile Include="Registries\CouchRegistry.cs" />
     <Compile Include="Couch\CouchResponse.cs" />
     <Compile Include="Couch\CouchRestClient.cs" />

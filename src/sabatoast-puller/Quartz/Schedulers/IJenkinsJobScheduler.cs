@@ -6,6 +6,7 @@ namespace sabatoast_puller.Quartz.Schedulers
     {
         string Group { get; }
         void Schedule(IScheduler scheduler, string job, string url);
+        void Remove(IScheduler scheduler, string job);
         JobKey KeyFor(string job);
         string TriggerGroup(string job);
     }
