@@ -1,4 +1,5 @@
-﻿using Quartz;
+﻿using FubuCore;
+using Quartz;
 using Quartz.Impl;
 using sabatoast_puller.Quartz.Jobs;
 using sabatoast_puller.Quartz.Triggers;
@@ -20,7 +21,8 @@ namespace sabatoast_puller.Quartz.Schedulers
         public void Schedule(IScheduler scheduler, string job, string url)
         {
             var jobDetail = new JobDetailImpl(job, Group, typeof (JenkinsJob));
-            var trigger = _triggerBuilder.Build();
+            var triggerGroup = TriggerGroup(job);
+            var trigger = _triggerBuilder.Build(triggerGroup);
 
             scheduler.ScheduleJob(jobDetail, trigger);
             scheduler.TriggerJob(jobDetail.Key);
@@ -29,6 +31,11 @@ namespace sabatoast_puller.Quartz.Schedulers
         public JobKey KeyFor(string job)
         {
             return new JobKey(job, Group);
+        }
+
+        public string TriggerGroup(string job)
+        {
+            return "{0}::{1}".ToFormat(Group, job);
         }
     }
 }

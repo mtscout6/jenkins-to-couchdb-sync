@@ -6,9 +6,9 @@ namespace sabatoast_puller.Quartz.Triggers
 {
     public class HalfMinuteTrigger : CronTriggerImpl, IHalfMinuteTrigger
     {
-        public HalfMinuteTrigger() : this(0) { }
+        public HalfMinuteTrigger() : this(null, 0) { }
 
-        public HalfMinuteTrigger(int onSecond) : base("HalfMinuteTrigger." + Guid.NewGuid())
+        public HalfMinuteTrigger(string group, int onSecond) : base("HalfMinuteTrigger." + Guid.NewGuid(), group)
         {
             OnSecond(onSecond);
         }

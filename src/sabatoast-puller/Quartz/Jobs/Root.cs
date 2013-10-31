@@ -2,7 +2,6 @@
 using Common.Logging;
 using Quartz;
 using Quartz.Impl.Matchers;
-using StructureMap;
 using sabatoast_puller.Jenkins;
 using System.Collections.Generic;
 using FubuCore;
@@ -51,6 +50,9 @@ namespace sabatoast_puller.Quartz.Jobs
 
             foreach (var removedJob in existingJobDetails)
             {
+                Scheduler.GetTriggerKeys(GroupMatcher<TriggerKey>.GroupEquals(_jobScheduler.TriggerGroup(removedJob.Name)))
+                    .Each(trigger => Scheduler.UnscheduleJob(trigger));
+
                 Scheduler.DeleteJob(removedJob);
             }
         }

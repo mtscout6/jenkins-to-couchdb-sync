@@ -4,9 +4,9 @@
     {
         private int _second;
 
-        public IHalfMinuteTrigger Build()
+        public IHalfMinuteTrigger Build(string group)
         {
-            var trigger = new HalfMinuteTrigger(_second);
+            var trigger = new HalfMinuteTrigger(group, _second);
 
             _second++;
 

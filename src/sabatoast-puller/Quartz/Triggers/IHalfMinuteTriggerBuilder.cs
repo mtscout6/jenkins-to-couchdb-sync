@@ -2,6 +2,6 @@
 {
     public interface IHalfMinuteTriggerBuilder
     {
-        IHalfMinuteTrigger Build();
+        IHalfMinuteTrigger Build(string group);
     }
 }
