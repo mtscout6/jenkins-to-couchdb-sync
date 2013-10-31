@@ -18,8 +18,7 @@ namespace sabatoast_puller.Quartz.Jobs
 
         public void Execute(IJobExecutionContext context)
         {
-            var job = context.JobDetail.JobDataMap["job"];
-            var url = context.JobDetail.JobDataMap["url"];
+            var job = context.JobDetail.Key.Name;
 
             _log.Info("Polling Jenkins job {0}".ToFormat(job));
         }

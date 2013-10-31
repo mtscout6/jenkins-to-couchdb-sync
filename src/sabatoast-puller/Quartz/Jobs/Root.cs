@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Common.Logging;
 using Quartz;
+using Quartz.Impl.Matchers;
 using StructureMap;
 using sabatoast_puller.Jenkins;
 using System.Collections.Generic;
@@ -32,11 +33,26 @@ namespace sabatoast_puller.Quartz.Jobs
 
         void Process(Jenkins.Models.Root root)
         {
+            var existingJobDetails = Scheduler.GetJobKeys(GroupMatcher<JobKey>.GroupEquals(_jobScheduler.Group));
+
             root.Jobs.Each(job =>
                 {
+                    var jobKey = _jobScheduler.KeyFor(job.Name);
+
+                    if (existingJobDetails.Contains(jobKey))
+                    {
+                        existingJobDetails.Remove(jobKey);
+                        return;
+                    }
+
                     _log.Debug("Scheduling job {0}".ToFormat(job.Name));
                     _jobScheduler.Schedule(Scheduler, job.Name, job.Url);
                 });
+
+            foreach (var removedJob in existingJobDetails)
+            {
+                Scheduler.DeleteJob(removedJob);
+            }
         }
 
     }
