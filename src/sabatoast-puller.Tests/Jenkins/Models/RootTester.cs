@@ -10,8 +10,8 @@ namespace sabatoast_puller.Tests.Jenkins.Models
         [Test]
         public void NotEqualWithDifferentRevisions()
         {
-            var root1 = new Root {_rev = "1"};
-            var root2 = new Root {_rev = "2"};
+            var root1 = new RootModel {_rev = "1"};
+            var root2 = new RootModel {_rev = "2"};
 
             root1.Equals(root2).ShouldBeFalse();
         }
@@ -19,7 +19,7 @@ namespace sabatoast_puller.Tests.Jenkins.Models
         [Test]
         public void ReferenceEquals()
         {
-            var root = new Root {_rev = "1"};
+            var root = new RootModel {_rev = "1"};
 
             root.Equals(root).ShouldBeTrue();
         }
@@ -27,8 +27,8 @@ namespace sabatoast_puller.Tests.Jenkins.Models
         [Test]
         public void EqualWithSameRevisions()
         {
-            var root1 = new Root {_rev = "1"};
-            var root2 = new Root {_rev = "1"};
+            var root1 = new RootModel {_rev = "1"};
+            var root2 = new RootModel {_rev = "1"};
 
             root1.Equals(root2).ShouldBeTrue();
         }
@@ -36,7 +36,7 @@ namespace sabatoast_puller.Tests.Jenkins.Models
         [Test]
         public void EqualWithSameListValues()
         {
-            var root1 = new Root
+            var root1 = new RootModel
                 {
                     _rev = "1",
                     Jobs = new List<RootJob>
@@ -46,7 +46,7 @@ namespace sabatoast_puller.Tests.Jenkins.Models
                         }
                 };
 
-            var root2 = new Root
+            var root2 = new RootModel
                 {
                     _rev = "1",
                     Jobs = new List<RootJob>
@@ -62,7 +62,7 @@ namespace sabatoast_puller.Tests.Jenkins.Models
         [Test]
         public void EqualWithSameListValuesIgnoreOrder()
         {
-            var root1 = new Root
+            var root1 = new RootModel
                 {
                     _rev = "1",
                     Jobs = new List<RootJob>
@@ -72,7 +72,7 @@ namespace sabatoast_puller.Tests.Jenkins.Models
                         }
                 };
 
-            var root2 = new Root
+            var root2 = new RootModel
                 {
                     _rev = "1",
                     Jobs = new List<RootJob>
@@ -88,7 +88,7 @@ namespace sabatoast_puller.Tests.Jenkins.Models
         [Test]
         public void NotEqualWithDifferentListValues()
         {
-            var root1 = new Root
+            var root1 = new RootModel
                 {
                     _rev = "1",
                     Jobs = new List<RootJob>
@@ -98,7 +98,7 @@ namespace sabatoast_puller.Tests.Jenkins.Models
                         }
                 };
 
-            var root2 = new Root
+            var root2 = new RootModel
                 {
                     _rev = "1",
                     Jobs = new List<RootJob>

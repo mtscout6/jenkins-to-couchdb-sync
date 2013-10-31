@@ -2,7 +2,7 @@
 
 namespace sabatoast_puller.Jenkins.Models
 {
-    public class Job
+    public class JenkinsJobModel
     {
         public string Description { get; set; }
         public string DisplayName { get; set; }

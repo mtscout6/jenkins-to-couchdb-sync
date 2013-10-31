@@ -6,7 +6,7 @@ using sabatoast_puller.Utils;
 
 namespace sabatoast_puller.Jenkins.Models
 {
-    public class Root : CouchDocument<Root>, IEquatable<Root>
+    public class RootModel : CouchDocument<RootModel>, IEquatable<RootModel>
     {
         private const string Id = "ROOT";
 
@@ -24,23 +24,23 @@ namespace sabatoast_puller.Jenkins.Models
 
         public List<RootJob> Jobs { get; set; }
 
-        public override bool Equals(CouchDocument<Root> obj)
+        public override bool Equals(CouchDocument<RootModel> obj)
         {
             var equals = base.Equals(obj);
-            return equals && EqualsInternal(obj as Root);
+            return equals && EqualsInternal(obj as RootModel);
         }
 
-        public bool Equals(Root obj)
+        public bool Equals(RootModel obj)
         {
-            return Equals(obj as CouchDocument<Root>);
+            return Equals(obj as CouchDocument<RootModel>);
         }
 
         public override bool Equals(object obj)
         {
-            return Equals(obj as Root);
+            return Equals(obj as RootModel);
         }
 
-        bool EqualsInternal(Root obj)
+        bool EqualsInternal(RootModel obj)
         {
             if (obj == null) return false;
 

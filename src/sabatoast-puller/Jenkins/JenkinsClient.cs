@@ -12,7 +12,7 @@ namespace sabatoast_puller.Jenkins
 {
     public interface IJenkinsClient
     {
-        Task<Root> Root();
+        Task<RootModel> Root();
     }
 
     public class JenkinsClient : IJenkinsClient
@@ -28,10 +28,10 @@ namespace sabatoast_puller.Jenkins
             _log = log;
         }
 
-        public Task<Root> Root()
+        public Task<RootModel> Root()
         {
             var request = new RestRequest("api/json", Method.GET);
-            return Process<Root>(request);
+            return Process<RootModel>(request);
         }
 
         Task<T> Process<T>(IRestRequest request) where T : ICouchDocument

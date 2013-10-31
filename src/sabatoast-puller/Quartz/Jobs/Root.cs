@@ -31,7 +31,7 @@ namespace sabatoast_puller.Quartz.Jobs
                           .ContinueWith(t => Process(t.Result), TaskContinuationOptions.OnlyOnRanToCompletion);
         }
 
-        void Process(Jenkins.Models.Root root)
+        void Process(Jenkins.Models.RootModel root)
         {
             var existingJobDetails = Scheduler.GetJobKeys(GroupMatcher<JobKey>.GroupEquals(_jobScheduler.Group));
 

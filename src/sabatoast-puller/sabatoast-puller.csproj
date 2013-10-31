@@ -74,8 +74,8 @@
     <Compile Include="Couch\ICouchRestClient.cs" />
     <Compile Include="Jenkins\JenkinsConnectionFailedException.cs" />
     <Compile Include="Jenkins\Models\Build.cs" />
-    <Compile Include="Jenkins\Models\Job.cs" />
-    <Compile Include="Jenkins\Models\Root.cs" />
+    <Compile Include="Jenkins\Models\JenkinsJobModel.cs" />
+    <Compile Include="Jenkins\Models\RootModel.cs" />
     <Compile Include="Jenkins\JenkinsClient.cs" />
     <Compile Include="Jenkins\JenkinsRestClient.cs" />
     <Compile Include="Jenkins\JenkinsSettings.cs" />
