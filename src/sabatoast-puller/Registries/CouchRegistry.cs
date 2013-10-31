@@ -1,7 +1,8 @@
 ﻿using System;
 using StructureMap.Configuration.DSL;
+using sabatoast_puller.Couch;
 
-namespace sabatoast_puller.Couch
+namespace sabatoast_puller.Registries
 {
     public class CouchRegistry : Registry
     {

@@ -7,20 +7,18 @@ namespace sabatoast_puller.Quartz.Schedulers
 {
     public class RootJobScheduler : IRootJobScheduler
     {
-        private readonly IScheduler _scheduler;
         private readonly IHourlyTrigger _trigger;
 
-        public RootJobScheduler(IScheduler scheduler, IHourlyTrigger trigger)
+        public RootJobScheduler(IHourlyTrigger trigger)
         {
-            _scheduler = scheduler;
             _trigger = trigger;
         }
 
-        public void Schedule()
+        public void Schedule(IScheduler scheduler)
         {
             var jobDetail = new JobDetailImpl(typeof(Root).Name, typeof(Root));
-            _scheduler.ScheduleJob(jobDetail, _trigger);
-            _scheduler.TriggerJob(jobDetail.Key);
+            scheduler.ScheduleJob(jobDetail, _trigger);
+            scheduler.TriggerJob(jobDetail.Key);
         }
     }
 }

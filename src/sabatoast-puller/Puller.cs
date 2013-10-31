@@ -26,7 +26,7 @@ namespace sabatoast_puller
             var scheduler = _container.GetInstance<IScheduler>();
             scheduler.Start();
 
-            _container.GetInstance<IRootJobScheduler>().Schedule();
+            _container.GetInstance<IRootJobScheduler>().Schedule(scheduler);
         }
 
         public void Stop()

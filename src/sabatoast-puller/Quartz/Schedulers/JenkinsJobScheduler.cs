@@ -8,16 +8,14 @@ namespace sabatoast_puller.Quartz.Schedulers
 {
     public class JenkinsJobScheduler : IJenkinsJobScheduler
     {
-        private readonly IScheduler _scheduler;
         private readonly IHalfMinuteTriggerBuilder _triggerBuilder;
 
-        public JenkinsJobScheduler(IHalfMinuteTriggerBuilder triggerBuilder, IScheduler scheduler)
+        public JenkinsJobScheduler(IHalfMinuteTriggerBuilder triggerBuilder)
         {
-            _scheduler = scheduler;
             _triggerBuilder = triggerBuilder;
         }
 
-        public void Schedule(string job, string url)
+        public void Schedule(IScheduler scheduler, string job, string url)
         {
             var jobDetail = new JobDetailImpl("job/{0}".ToFormat(job), typeof (JenkinsJob));
             jobDetail.JobDataMap["job"] = job;
@@ -25,8 +23,8 @@ namespace sabatoast_puller.Quartz.Schedulers
 
             var trigger = _triggerBuilder.Build();
 
-            _scheduler.ScheduleJob(jobDetail, trigger);
-            _scheduler.TriggerJob(jobDetail.Key);
+            scheduler.ScheduleJob(jobDetail, trigger);
+            scheduler.TriggerJob(jobDetail.Key);
         }
     }
 }

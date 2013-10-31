@@ -13,7 +13,7 @@ namespace sabatoast_puller.Registries
     {
         public QuartzRegistry()
         {
-            For<IJobFactory>().Use<StructureMapSchedulerJobFactory>();
+            For<IJobFactory>().Singleton().Use<StructureMapSchedulerJobFactory>();
             For<IThreadPool>().Singleton().Use(new SimpleThreadPool());
             For<IJobStore>().Singleton().Use<RAMJobStore>();
 

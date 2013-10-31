@@ -8,14 +8,14 @@ namespace sabatoast_puller.Quartz.Triggers
     {
         public HalfMinuteTrigger() : this(0) { }
 
-        public HalfMinuteTrigger(int onSecond) : base("Half Minute Trigger")
+        public HalfMinuteTrigger(int onSecond) : base("HalfMinuteTrigger." + Guid.NewGuid())
         {
             OnSecond(onSecond);
         }
 
         public void OnSecond(int second)
         {
-            if (0 < second || second >= 30)
+            if (0 > second || second >= 30)
                 throw new ArgumentException("Must be between 0-29", "second");
 
             CronExpressionString = "{0}/30 * * * * ?".ToFormat(second);

@@ -1,9 +1,9 @@
-using sabatoast_puller.Jenkins.Models;
+using Quartz;
 
 namespace sabatoast_puller.Quartz.Schedulers
 {
     public interface IJenkinsJobScheduler
     {
-        void Schedule(string job, string url);
+        void Schedule(IScheduler scheduler, string job, string url);
     }
 }

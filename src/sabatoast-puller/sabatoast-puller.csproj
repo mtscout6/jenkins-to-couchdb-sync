@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>sabatoast_puller</RootNamespace>
     <AssemblyName>sabatoast-puller</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -43,7 +43,7 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Quartz">
       <HintPath>..\packages\Quartz\lib\net40\Quartz.dll</HintPath>
@@ -66,7 +66,8 @@
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Couch\CouchClient.cs" />
-    <Compile Include="Couch\CouchRegistry.cs" />
+    <Compile Include="Quartz\Jobs\IJobWithScheduler.cs" />
+    <Compile Include="Registries\CouchRegistry.cs" />
     <Compile Include="Couch\CouchResponse.cs" />
     <Compile Include="Couch\CouchRestClient.cs" />
     <Compile Include="Couch\CouchSettings.cs" />
