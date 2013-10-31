@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 using RestSharp;
 using Quartz.Util;
 using sabatoast_puller.Utils.Json;
@@ -9,6 +10,7 @@ namespace sabatoast_puller.Couch
     public interface ICouchClient
     {
         Task<IRestResponse<CouchResponse>> Save<T>(T document) where T : ICouchDocument;
+        Task<IRestResponse<CouchResponse>> Save(JObject obj);
         Task<IRestResponse<T>> Get<T>(string id) where T : ICouchDocument;
     }
 
@@ -50,6 +52,18 @@ namespace sabatoast_puller.Couch
 
                                   return response;
                               });
+        }
+
+        public Task<IRestResponse<CouchResponse>> Save(JObject obj)
+        {
+            var request = BuildRequest(obj["_id"].Value<string>());
+            request.Method = Method.PUT;
+            request.AddHeader("Content-Type", "application/json");
+            request.JsonSerializer = new NewtonsoftJsonSerializer();
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(obj);
+
+            return _client.ExecuteTaskAsync<CouchResponse>(request);
         }
 
         public Task<IRestResponse<T>> Get<T>(string id) where T : ICouchDocument

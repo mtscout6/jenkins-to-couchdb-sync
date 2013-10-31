@@ -1,6 +1,8 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
 using Common.Logging;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RestSharp;
 using sabatoast_puller.Couch;
 using sabatoast_puller.Jenkins.Models;
@@ -55,24 +57,35 @@ namespace sabatoast_puller.Jenkins
                         throw new JenkinsFailedException(message);
                     }
 
-                    return response.Data;
+                    return response;
                 });
 
             responseTask.ContinueWith(t =>
                 {
-                    var jenkinsData = t.Result;
+                    var jenkinsResponse = t.Result;
 
-                    _couchClient.Get<T>(jenkinsData._id)
+                    _couchClient.Get<T>(jenkinsResponse.Data._id)
                                 .ContinueWith(ct =>
                                     {
+                                        bool save;
                                         var couchResponse = ct.Result;
+
+                                        var jenkinsData = JsonConvert.DeserializeObject<JObject>(jenkinsResponse.Content);
+                                        jenkinsData["_id"] = jenkinsResponse.Data._id;
 
                                         if (couchResponse.StatusCode == HttpStatusCode.OK)
                                         {
-                                            jenkinsData._rev = couchResponse.Data._rev;
+                                            var couchData = JsonConvert.DeserializeObject<JObject>(couchResponse.Content);
+                                            jenkinsData["_rev"] = couchData["_rev"];
+
+                                            save = !JToken.DeepEquals(jenkinsData, couchData);
+                                        }
+                                        else
+                                        {
+                                            save = true;
                                         }
 
-                                        if (!jenkinsData.Equals(couchResponse.Data))
+                                        if (save)
                                         {
                                             _couchClient.Save(jenkinsData);
                                         }
@@ -80,7 +93,7 @@ namespace sabatoast_puller.Jenkins
                                     }, TaskContinuationOptions.OnlyOnRanToCompletion);
                 }, TaskContinuationOptions.OnlyOnRanToCompletion);
 
-            return responseTask;
+            return responseTask.ContinueWith(t => t.Result.Data, TaskContinuationOptions.OnlyOnRanToCompletion);
         }
     }
 }
