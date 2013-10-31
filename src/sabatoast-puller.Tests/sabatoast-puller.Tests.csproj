@@ -65,6 +65,7 @@
     <Compile Include="Couch\CouchClientUpdateTester.cs" />
     <Compile Include="Couch\CouchClientSaveAndGetTester.cs" />
     <Compile Include="Couch\CouchDbInteractionContext.cs" />
+    <Compile Include="Jenkins\Models\RootTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

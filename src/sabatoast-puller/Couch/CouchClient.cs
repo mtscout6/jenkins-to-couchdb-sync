@@ -23,7 +23,7 @@ namespace sabatoast_puller.Couch
             _settings = settings;
         }
 
-        public Task<IRestResponse<CouchResponse>>  Save<T>(T document) where T : ICouchDocument
+        public Task<IRestResponse<CouchResponse>> Save<T>(T document) where T : ICouchDocument
         {
             if (document._id.IsNullOrWhiteSpace())
             {

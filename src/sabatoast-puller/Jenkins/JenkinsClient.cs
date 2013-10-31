@@ -55,12 +55,32 @@ namespace sabatoast_puller.Jenkins
                         throw new JenkinsFailedException(message);
                     }
 
-                    return response;
+                    return response.Data;
                 });
 
-            // TODO: Save off to couch here
+            responseTask.ContinueWith(t =>
+                {
+                    var jenkinsData = t.Result;
 
-            return responseTask.ContinueWith(t => t.Result.Data, TaskContinuationOptions.ExecuteSynchronously);
+                    _couchClient.Get<T>(jenkinsData._id)
+                                .ContinueWith(ct =>
+                                    {
+                                        var couchResponse = ct.Result;
+
+                                        if (couchResponse.StatusCode == HttpStatusCode.OK)
+                                        {
+                                            jenkinsData._rev = couchResponse.Data._rev;
+                                        }
+
+                                        if (!jenkinsData.Equals(couchResponse.Data))
+                                        {
+                                            _couchClient.Save(jenkinsData);
+                                        }
+
+                                    }, TaskContinuationOptions.OnlyOnRanToCompletion);
+                }, TaskContinuationOptions.OnlyOnRanToCompletion);
+
+            return responseTask;
         }
     }
 }

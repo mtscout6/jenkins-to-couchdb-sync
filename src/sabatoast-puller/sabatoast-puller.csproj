@@ -105,6 +105,7 @@
     <Compile Include="Utils\Json\JsonCamelCaseReader.cs" />
     <Compile Include="Utils\Json\NewtonsoftJsonDeserializer.cs" />
     <Compile Include="Utils\Json\NewtonsoftJsonSerializer.cs" />
+    <Compile Include="Utils\ListExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
