@@ -1,7 +1,9 @@
-﻿using Common.Logging;
+﻿using System.Threading.Tasks;
+using Common.Logging;
 using Quartz;
 using sabatoast_puller.Jenkins;
 using FubuCore;
+using sabatoast_puller.Jenkins.Models;
 
 namespace sabatoast_puller.Quartz.Jobs
 {
@@ -21,6 +23,14 @@ namespace sabatoast_puller.Quartz.Jobs
             var job = context.JobDetail.Key.Name;
 
             _log.Info("Polling Jenkins job {0}".ToFormat(job));
+
+            _client.Job(job)
+                .ContinueWith(t => Process(t.Result), TaskContinuationOptions.OnlyOnRanToCompletion);
+        }
+
+        void Process(JenkinsJobModel job)
+        {
+            // TODO: Implement Job Handling
         }
     }
 }

@@ -13,6 +13,7 @@ namespace sabatoast_puller.Jenkins
     public interface IJenkinsClient
     {
         Task<RootModel> Root();
+        Task<JenkinsJobModel> Job(string job);
     }
 
     public class JenkinsClient : IJenkinsClient
@@ -34,14 +35,20 @@ namespace sabatoast_puller.Jenkins
             return Process<RootModel>(request);
         }
 
+        public Task<JenkinsJobModel> Job(string job)
+        {
+            var request = new RestRequest("job/{0}/api/json".ToFormat(job), Method.GET);
+            return Process<JenkinsJobModel>(request);
+        }
+
         Task<T> Process<T>(IRestRequest request) where T : ICouchDocument
         {
             var jenkinsRequestTask = _client.ExecuteTaskAsync<T>(request);
+            var url = _client.BuildUri(request).PathAndQuery;
 
             var responseTask = jenkinsRequestTask.ContinueWith(t =>
                 {
                     var response = t.Result;
-                    var url = _client.BuildUri(request).PathAndQuery;
 
                     if (response.ResponseStatus != ResponseStatus.Completed)
                     {
@@ -58,7 +65,7 @@ namespace sabatoast_puller.Jenkins
                     }
 
                     return response;
-                });
+                }, TaskContinuationOptions.OnlyOnRanToCompletion);
 
             responseTask.ContinueWith(t =>
                 {
@@ -92,6 +99,11 @@ namespace sabatoast_puller.Jenkins
 
                                     }, TaskContinuationOptions.OnlyOnRanToCompletion);
                 }, TaskContinuationOptions.OnlyOnRanToCompletion);
+
+            responseTask.ContinueWith(t =>
+                {
+                    _log.Error("Failed to process Jenkins request for url '{0}'".ToFormat(url), t.Exception);
+                }, TaskContinuationOptions.OnlyOnFaulted);
 
             return responseTask.ContinueWith(t => t.Result.Data, TaskContinuationOptions.OnlyOnRanToCompletion);
         }

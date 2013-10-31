@@ -1,9 +1,23 @@
 ﻿using System.Collections.Generic;
+using sabatoast_puller.Couch;
+using FubuCore;
 
 namespace sabatoast_puller.Jenkins.Models
 {
-    public class JenkinsJobModel
+    public class JenkinsJobModel : CouchDocument<JenkinsJobModel>
     {
+        public override string _id
+        {
+            get
+            {
+                return "job[{0}]".ToFormat(Name);
+            }
+            set
+            {
+                // NO-OP
+            }
+        }
+
         public string Description { get; set; }
         public string DisplayName { get; set; }
         public string Name { get; set; }

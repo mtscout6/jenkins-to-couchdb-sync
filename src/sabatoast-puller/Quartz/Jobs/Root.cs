@@ -5,6 +5,7 @@ using Quartz.Impl.Matchers;
 using sabatoast_puller.Jenkins;
 using System.Collections.Generic;
 using FubuCore;
+using sabatoast_puller.Jenkins.Models;
 using sabatoast_puller.Quartz.Schedulers;
 
 namespace sabatoast_puller.Quartz.Jobs
@@ -30,7 +31,7 @@ namespace sabatoast_puller.Quartz.Jobs
                           .ContinueWith(t => Process(t.Result), TaskContinuationOptions.OnlyOnRanToCompletion);
         }
 
-        void Process(Jenkins.Models.RootModel root)
+        void Process(RootModel root)
         {
             var existingJobDetails = Scheduler.GetJobKeys(GroupMatcher<JobKey>.GroupEquals(_jobScheduler.Group));
 
