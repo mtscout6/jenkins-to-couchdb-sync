@@ -37,6 +37,7 @@ namespace sabatoast_puller.Registries
 
             For<IRootJobScheduler>().Use<RootJobScheduler>();
             For<IJenkinsJobScheduler>().Use<JenkinsJobScheduler>();
+            For<IBuildScheduler>().Use<BuildScheduler>();
 
             For<IHourlyTrigger>().AlwaysUnique().Use(ctx => new HourlyTrigger());
             For<IHalfMinuteTriggerBuilder>().Use<HalfMinuteTriggerBuilder>();
