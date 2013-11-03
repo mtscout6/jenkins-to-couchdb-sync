@@ -26,6 +26,10 @@ namespace sabatoast_puller.Quartz.Schedulers
         public void Schedule(IScheduler scheduler, string job, int build)
         {
             var group = Group(job);
+
+            if (scheduler.GetJobDetail(new JobKey(build.ToString(), group)) != null)
+                return;
+
             var jobDetail = new JobDetailImpl(build.ToString(), group, typeof (JenkinsBuild));
 
             jobDetail.JobDataMap["job"] = job;

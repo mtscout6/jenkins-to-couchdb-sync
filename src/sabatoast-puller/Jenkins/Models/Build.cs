@@ -1,11 +1,21 @@
 ﻿using System.Collections.Generic;
+using sabatoast_puller.Couch;
+using FubuCore;
 
 namespace sabatoast_puller.Jenkins.Models
 {
-    public class Build
+    public class Build : CouchDocument<Build>
     {
-        public List<IBuildActions> Actions { get; set; }
+        public override string _id
+        {
+            get { return "job[{0}][{1}]".ToFormat(Job, Number); }
+            set
+            {
+                // NO-OP
+            }
+        }
 
+        public string Job { get; set; }
         public bool Building { get; set; }
         public string Description { get; set; }
         public int Duration { get; set; }

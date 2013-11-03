@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using Common.Logging;
 using Newtonsoft.Json;
@@ -14,6 +15,7 @@ namespace sabatoast_puller.Jenkins
     {
         Task<RootModel> Root();
         Task<JenkinsJobModel> Job(string job);
+        Task<Build> Build(string job, int build);
     }
 
     public class JenkinsClient : IJenkinsClient
@@ -41,7 +43,13 @@ namespace sabatoast_puller.Jenkins
             return Process<JenkinsJobModel>(request);
         }
 
-        Task<T> Process<T>(IRestRequest request) where T : ICouchDocument
+        public Task<Build> Build(string job, int build)
+        {
+            var request = new RestRequest("job/{0}/{1}/api/json".ToFormat(job, build), Method.GET);
+            return Process<Build>(request, b => b.Job = job);
+        }
+
+        Task<T> Process<T>(IRestRequest request, Action<T> modify = null) where T : ICouchDocument
         {
             var jenkinsRequestTask = _client.ExecuteTaskAsync<T>(request);
             var url = _client.BuildUri(request).PathAndQuery;
@@ -66,6 +74,15 @@ namespace sabatoast_puller.Jenkins
 
                     return response;
                 }, TaskContinuationOptions.OnlyOnRanToCompletion);
+
+            if (modify != null)
+            {
+                responseTask = responseTask.ContinueWith(t =>
+                    {
+                        modify(t.Result.Data);
+                        return t.Result;
+                    }, TaskContinuationOptions.OnlyOnRanToCompletion);
+            }
 
             responseTask.ContinueWith(t =>
                 {
