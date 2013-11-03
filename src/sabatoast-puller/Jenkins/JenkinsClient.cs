@@ -46,10 +46,10 @@ namespace sabatoast_puller.Jenkins
         public Task<Build> Build(string job, int build)
         {
             var request = new RestRequest("job/{0}/{1}/api/json".ToFormat(job, build), Method.GET);
-            return Process<Build>(request, b => b.Job = job);
+            return Process<Build>(request, b => b["job"] = job);
         }
 
-        Task<T> Process<T>(IRestRequest request, Action<T> modify = null) where T : ICouchDocument
+        Task<T> Process<T>(IRestRequest request, Action<JObject> modify = null) where T : ICouchDocument
         {
             var jenkinsRequestTask = _client.ExecuteTaskAsync<T>(request);
             var url = _client.BuildUri(request).PathAndQuery;
@@ -75,15 +75,6 @@ namespace sabatoast_puller.Jenkins
                     return response;
                 }, TaskContinuationOptions.OnlyOnRanToCompletion);
 
-            if (modify != null)
-            {
-                responseTask = responseTask.ContinueWith(t =>
-                    {
-                        modify(t.Result.Data);
-                        return t.Result;
-                    }, TaskContinuationOptions.OnlyOnRanToCompletion);
-            }
-
             responseTask.ContinueWith(t =>
                 {
                     var jenkinsResponse = t.Result;
@@ -96,6 +87,12 @@ namespace sabatoast_puller.Jenkins
 
                                         var jenkinsData = JsonConvert.DeserializeObject<JObject>(jenkinsResponse.Content);
                                         jenkinsData["_id"] = jenkinsResponse.Data._id;
+                                        jenkinsData["type"] = jenkinsResponse.Data.type;
+
+                                        if (modify != null)
+                                        {
+                                            modify(jenkinsData);
+                                        }
 
                                         if (couchResponse.StatusCode == HttpStatusCode.OK)
                                         {

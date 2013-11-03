@@ -36,9 +36,9 @@ namespace sabatoast_puller.Quartz.Schedulers
         {
             _buildScheduler.RemoveAll(scheduler, job);
 
-            scheduler.GetTriggerKeys(GroupMatcher<TriggerKey>.GroupEquals(TriggerGroup(job)))
-                .Each(trigger => scheduler.UnscheduleJob(trigger));
+            var jobKey = KeyFor(job);
 
+            scheduler.GetTriggersOfJob(jobKey).Each(t => scheduler.UnscheduleJob(t.Key));
             scheduler.DeleteJob(KeyFor(job));
         }
 

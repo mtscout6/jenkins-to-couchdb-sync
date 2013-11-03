@@ -47,6 +47,7 @@ namespace sabatoast_puller.Quartz.Jobs
                 Scheduler.GetJobKeys(GroupMatcher<JobKey>.GroupEquals(_buildScheduler.Group(job.Name)))
                          .Select(x => int.Parse(x.Name)));
 
+            // TODO: Filter out builds that are already in couch
             job.Builds.Each(build =>
                 {
                     if (builds.Contains(build.Number))

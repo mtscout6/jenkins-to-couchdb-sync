@@ -4,6 +4,7 @@ using Quartz;
 using Quartz.Impl;
 using sabatoast_puller.Quartz.Jobs;
 using sabatoast_puller.Quartz.Triggers;
+using System.Collections.Generic;
 
 namespace sabatoast_puller.Quartz.Schedulers
 {
@@ -27,7 +28,7 @@ namespace sabatoast_puller.Quartz.Schedulers
         {
             var group = Group(job);
 
-            if (scheduler.GetJobDetail(new JobKey(build.ToString(), group)) != null)
+            if (scheduler.GetJobDetail(JobKey(job, build)) != null)
                 return;
 
             var jobDetail = new JobDetailImpl(build.ToString(), group, typeof (JenkinsBuild));
@@ -43,12 +44,21 @@ namespace sabatoast_puller.Quartz.Schedulers
 
         public void Remove(IScheduler scheduler, string job, int build)
         {
-            _log.Warn("NOT IMPLEMENTED REMOVE BUILD");
+            var jobKey = JobKey(job, build);
+
+            scheduler.GetTriggersOfJob(jobKey).Each(t => scheduler.UnscheduleJob(t.Key));
+            scheduler.DeleteJob(jobKey);
         }
 
         public void RemoveAll(IScheduler scheduler, string job)
         {
+            // TODO: Implement this
             _log.Warn("NOT IMPLEMENTED REMOVE ALL BUILDS");
+        }
+
+        JobKey JobKey(string job, int build)
+        {
+            return new JobKey(build.ToString(), Group(job));
         }
     }
 }
