@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Common.Logging;
 using Quartz;
 using Quartz.Impl.Matchers;
+using sabatoast_puller.Couch;
 using sabatoast_puller.Jenkins;
 using FubuCore;
 using sabatoast_puller.Jenkins.Models;
@@ -17,12 +18,14 @@ namespace sabatoast_puller.Quartz.Jobs
 
         private readonly IJenkinsClient _client;
         private readonly ILog _log;
+        private readonly ICouchClient _couchClient;
         private readonly IBuildScheduler _buildScheduler;
 
-        public JenkinsJob(IJenkinsClient client, ILog log, IBuildScheduler buildScheduler)
+        public JenkinsJob(IJenkinsClient client, ILog log, ICouchClient couchClient, IBuildScheduler buildScheduler)
         {
             _client = client;
             _log = log;
+            _couchClient = couchClient;
             _buildScheduler = buildScheduler;
         }
 
@@ -47,20 +50,28 @@ namespace sabatoast_puller.Quartz.Jobs
                 Scheduler.GetJobKeys(GroupMatcher<JobKey>.GroupEquals(_buildScheduler.Group(job.Name)))
                          .Select(x => int.Parse(x.Name)));
 
-            // TODO: Filter out builds that are already in couch
-            job.Builds.Each(build =>
-                {
-                    if (builds.Contains(build.Number))
-                    {
-                        builds.Remove(build.Number);
-                        return;
-                    }
+            _couchClient.GetSavedCompleteBuildsFor(job.Name)
+                        .ContinueWith(t =>
+                            {
+                                var completeBuilds = t.Result;
 
-                    _log.Info("Scheduling build {0} for {1}".ToFormat(build.Number, job.Name));
-                    _buildScheduler.Schedule(Scheduler, job.Name, build.Number);
-                });
+                                job.Builds
+                                   .Where(build => !completeBuilds.Contains(build.Number))
+                                   .Each(build =>
+                                       {
+                                           if (builds.Contains(build.Number))
+                                           {
+                                               builds.Remove(build.Number);
+                                               return;
+                                           }
 
-            builds.Each(b => _buildScheduler.Remove(Scheduler, job.Name, b));
+                                           _log.Info("Scheduling build {0} for {1}".ToFormat(build.Number, job.Name));
+                                           _buildScheduler.Schedule(Scheduler, job.Name, build.Number);
+                                       });
+
+                                builds.Each(b => _buildScheduler.Remove(Scheduler, job.Name, b));
+
+                            }, TaskContinuationOptions.OnlyOnRanToCompletion);
         }
     }
 }

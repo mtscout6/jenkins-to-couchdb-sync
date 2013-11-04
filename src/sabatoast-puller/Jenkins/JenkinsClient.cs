@@ -46,10 +46,10 @@ namespace sabatoast_puller.Jenkins
         public Task<Build> Build(string job, int build)
         {
             var request = new RestRequest("job/{0}/{1}/api/json".ToFormat(job, build), Method.GET);
-            return Process<Build>(request, b => b["job"] = job);
+            return Process<Build>(request, b => b.Job = job, b => b["job"] = job);
         }
 
-        Task<T> Process<T>(IRestRequest request, Action<JObject> modify = null) where T : ICouchDocument
+        Task<T> Process<T>(IRestRequest request, Action<T> modifyJenkinsData = null, Action<JObject> modifyRawJson = null) where T : ICouchDocument
         {
             var jenkinsRequestTask = _client.ExecuteTaskAsync<T>(request);
             var url = _client.BuildUri(request).PathAndQuery;
@@ -75,6 +75,16 @@ namespace sabatoast_puller.Jenkins
                     return response;
                 }, TaskContinuationOptions.OnlyOnRanToCompletion);
 
+            if (modifyJenkinsData != null)
+            {
+                responseTask = responseTask.ContinueWith(t =>
+                    {
+                        var response = t.Result;
+                        modifyJenkinsData(response.Data);
+                        return response;
+                    });
+            }
+
             responseTask.ContinueWith(t =>
                 {
                     var jenkinsResponse = t.Result;
@@ -86,13 +96,14 @@ namespace sabatoast_puller.Jenkins
                                         var couchResponse = ct.Result;
 
                                         var jenkinsData = JsonConvert.DeserializeObject<JObject>(jenkinsResponse.Content);
+
+                                        if (modifyRawJson != null)
+                                        {
+                                            modifyRawJson(jenkinsData);
+                                        }
+
                                         jenkinsData["_id"] = jenkinsResponse.Data._id;
                                         jenkinsData["type"] = jenkinsResponse.Data.type;
-
-                                        if (modify != null)
-                                        {
-                                            modify(jenkinsData);
-                                        }
 
                                         if (couchResponse.StatusCode == HttpStatusCode.OK)
                                         {
