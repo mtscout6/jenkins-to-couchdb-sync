@@ -75,6 +75,8 @@ namespace sabatoast_puller.Jenkins
                     return response;
                 }, TaskContinuationOptions.OnlyOnRanToCompletion);
 
+            responseTask.ContinueWith(t => _log.Error("Failed to process Jenkins request for url '{0}'".ToFormat(url), t.Exception), TaskContinuationOptions.OnlyOnFaulted);
+
             if (modifyJenkinsData != null)
             {
                 responseTask = responseTask.ContinueWith(t =>
@@ -124,11 +126,6 @@ namespace sabatoast_puller.Jenkins
 
                                     }, TaskContinuationOptions.OnlyOnRanToCompletion);
                 }, TaskContinuationOptions.OnlyOnRanToCompletion);
-
-            responseTask.ContinueWith(t =>
-                {
-                    _log.Error("Failed to process Jenkins request for url '{0}'".ToFormat(url), t.Exception);
-                }, TaskContinuationOptions.OnlyOnFaulted);
 
             return responseTask.ContinueWith(t => t.Result.Data, TaskContinuationOptions.OnlyOnRanToCompletion);
         }
