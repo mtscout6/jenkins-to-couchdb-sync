@@ -69,7 +69,7 @@ namespace sabatoast_puller.Quartz.Jobs
                                            _buildScheduler.Schedule(Scheduler, job.Name, build.Number);
                                        });
 
-                                if (builds.Contains(job.LastBuild.Number) && !completeBuilds.Contains(job.LastBuild.Number))
+                                if (job.LastBuild != null && builds.Contains(job.LastBuild.Number) && !completeBuilds.Contains(job.LastBuild.Number))
                                 {
                                     _log.Info("Scheduling build {0} for {1}".ToFormat(job.LastBuild.Number, job.Name));
                                     _buildScheduler.Schedule(Scheduler, job.Name, job.LastBuild.Number);
