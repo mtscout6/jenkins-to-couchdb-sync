@@ -61,14 +61,14 @@ namespace sabatoast_puller.Jenkins
 
                     if (response.ResponseStatus != ResponseStatus.Completed)
                     {
-                        var message = "Failed to connect to Jenkins: {0}".ToFormat(url);
+                        var message = "Failed to connect to Jenkins: {0} [Response Status: {1}]".ToFormat(url, response.ResponseStatus);
                         _log.Error(message);
                         throw new JenkinsFailedException(message);
                     }
 
                     if (response.StatusCode != HttpStatusCode.OK)
                     {
-                        var message = "Failed to retrieve from Jenkins: {0}".ToFormat(url);
+                        var message = "Failed to retrieve from Jenkins: {0} [Status Code: {1}]".ToFormat(url, response.StatusCode);
                         _log.Error(message);
                         throw new JenkinsFailedException(message);
                     }
